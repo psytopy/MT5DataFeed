@@ -65,7 +65,7 @@ namespace MT5DealFeed
         private void button_db_confirm_Click(object sender, EventArgs e)
         {
             if (button_db_confirm.Text == "Edit")
-            {
+            { 
                 textBox_db_name.Enabled = true;
                 button_db_confirm.Text = "Confirm";
             }
