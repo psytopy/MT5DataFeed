@@ -9,6 +9,7 @@ namespace MT5DealFeed
     {
         Logger logger;
         int dealaddednum = 0;
+        int retries = 5;
         public MainForm()
         {
             InitializeComponent();
@@ -42,6 +43,7 @@ namespace MT5DealFeed
                 MessageBox.Show("Cannot login to the server");
                 return;
             }
+            dealaddednum = 0;
             label_stat_conn_stat.Text = "Connected";
             label_stat_conn_stat.ForeColor = Color.Green;
             button_login.Enabled = false;
@@ -55,7 +57,7 @@ namespace MT5DealFeed
             MTDataFeed.Stop();
             label_stat_conn_stat.Text = "Disconnected";
             label_stat_conn_stat.ForeColor = Color.Red;
-            label_activity_status.Text = $"Disconnected on {DateTime.Now.ToString("hh:mm:ss.fff")}";
+            label_activity_status.Text = $"Disconnected on {DateTime.Now.ToString("HH:mm:ss.fff")}";
             label_activity_status.ForeColor = Color.Red;
             button_logout.Enabled = false;
             button_login.Enabled = true;
@@ -68,8 +70,13 @@ namespace MT5DealFeed
             { 
                 textBox_db_name.Enabled = true;
                 button_db_confirm.Text = "Confirm";
+
+                DisableLoginControls();
+
+                label_stat_db_stat.Text = "Not Configured";
+                label_stat_db_stat.ForeColor = Color.Red;
             }
-            if (button_db_confirm.Text == "Confirm")
+            else if (button_db_confirm.Text == "Confirm")
             {
                 Helper.SetAppSetting("db", textBox_db_name.Text);
                 logger.Write(LogLevel.Info, "Database configuration updated");
@@ -254,16 +261,21 @@ namespace MT5DealFeed
             {
                 label_stat_conn_stat.Text = "Connected";
                 label_stat_conn_stat.ForeColor = Color.Green;
-                label_activity_status.Text = $"Connected on {DateTime.Now.ToString("hh:mm:ss.fff")}";
+                label_activity_status.Text = $"Connected on {DateTime.Now.ToString("HH:mm:ss.fff")}";
                 label_activity_status.ForeColor = Color.Green;
+                button_login.Enabled = false;
+                button_logout.Enabled = true;
             }
             if (status == MTServerStatus.Disconnected)
             {
                 label_stat_conn_stat.Text = "Disconnected";
                 label_stat_conn_stat.ForeColor = Color.Red;
-                label_activity_status.Text = $"Disconnected on {DateTime.Now.ToString("hh:mm:ss.fff")}";
+                label_activity_status.Text = $"Disconnected on {DateTime.Now.ToString("HH:mm:ss.fff")}";
                 label_activity_status.ForeColor = Color.Red;
-                MessageBox.Show($"Metatrader Server Disconnected! Timestamp: {DateTime.Now}");
+                //MessageBox.Show($"Metatrader Server Disconnected! Timestamp: {DateTime.Now}");
+                button_logout.Enabled = false;
+                button_login.Enabled = true;
+                MTDataFeed.Login(textBox_server.Text, UInt32.Parse(textBox_login.Text), textBox_password.Text);
             }
         }
 

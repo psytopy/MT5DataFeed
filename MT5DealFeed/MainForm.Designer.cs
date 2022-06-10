@@ -40,6 +40,10 @@ namespace MT5DealFeed
             this.label_password = new System.Windows.Forms.Label();
             this.label_login = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label_deal_no = new System.Windows.Forms.Label();
+            this.label_deal = new System.Windows.Forms.Label();
+            this.label_activity_status = new System.Windows.Forms.Label();
+            this.label_activity = new System.Windows.Forms.Label();
             this.label_stat_db_stat = new System.Windows.Forms.Label();
             this.label_db_stat = new System.Windows.Forms.Label();
             this.label_stat_conn_stat = new System.Windows.Forms.Label();
@@ -48,10 +52,6 @@ namespace MT5DealFeed
             this.button_db_confirm = new System.Windows.Forms.Button();
             this.textBox_db_name = new System.Windows.Forms.TextBox();
             this.label_db_name = new System.Windows.Forms.Label();
-            this.label_activity = new System.Windows.Forms.Label();
-            this.label_activity_status = new System.Windows.Forms.Label();
-            this.label_deal = new System.Windows.Forms.Label();
-            this.label_deal_no = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -164,6 +164,46 @@ namespace MT5DealFeed
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Status";
             // 
+            // label_deal_no
+            // 
+            this.label_deal_no.AutoSize = true;
+            this.label_deal_no.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_deal_no.Location = new System.Drawing.Point(146, 172);
+            this.label_deal_no.Name = "label_deal_no";
+            this.label_deal_no.Size = new System.Drawing.Size(15, 16);
+            this.label_deal_no.TabIndex = 9;
+            this.label_deal_no.Text = "0";
+            // 
+            // label_deal
+            // 
+            this.label_deal.AutoSize = true;
+            this.label_deal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_deal.Location = new System.Drawing.Point(12, 172);
+            this.label_deal.Name = "label_deal";
+            this.label_deal.Size = new System.Drawing.Size(128, 16);
+            this.label_deal.TabIndex = 8;
+            this.label_deal.Text = "No. of Deal Added : ";
+            // 
+            // label_activity_status
+            // 
+            this.label_activity_status.AutoSize = true;
+            this.label_activity_status.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_activity_status.Location = new System.Drawing.Point(105, 128);
+            this.label_activity_status.Name = "label_activity_status";
+            this.label_activity_status.Size = new System.Drawing.Size(71, 16);
+            this.label_activity_status.TabIndex = 7;
+            this.label_activity_status.Text = "No Activity";
+            // 
+            // label_activity
+            // 
+            this.label_activity.AutoSize = true;
+            this.label_activity.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_activity.Location = new System.Drawing.Point(12, 128);
+            this.label_activity.Name = "label_activity";
+            this.label_activity.Size = new System.Drawing.Size(87, 16);
+            this.label_activity.TabIndex = 6;
+            this.label_activity.Text = "Last Activity : ";
+            // 
             // label_stat_db_stat
             // 
             this.label_stat_db_stat.AutoSize = true;
@@ -242,46 +282,6 @@ namespace MT5DealFeed
             this.label_db_name.Size = new System.Drawing.Size(125, 20);
             this.label_db_name.TabIndex = 2;
             this.label_db_name.Text = "Database Name";
-            // 
-            // label_activity
-            // 
-            this.label_activity.AutoSize = true;
-            this.label_activity.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_activity.Location = new System.Drawing.Point(12, 128);
-            this.label_activity.Name = "label_activity";
-            this.label_activity.Size = new System.Drawing.Size(87, 16);
-            this.label_activity.TabIndex = 6;
-            this.label_activity.Text = "Last Activity : ";
-            // 
-            // label_activity_status
-            // 
-            this.label_activity_status.AutoSize = true;
-            this.label_activity_status.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_activity_status.Location = new System.Drawing.Point(105, 128);
-            this.label_activity_status.Name = "label_activity_status";
-            this.label_activity_status.Size = new System.Drawing.Size(71, 16);
-            this.label_activity_status.TabIndex = 7;
-            this.label_activity_status.Text = "No Activity";
-            // 
-            // label_deal
-            // 
-            this.label_deal.AutoSize = true;
-            this.label_deal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_deal.Location = new System.Drawing.Point(12, 172);
-            this.label_deal.Name = "label_deal";
-            this.label_deal.Size = new System.Drawing.Size(128, 16);
-            this.label_deal.TabIndex = 8;
-            this.label_deal.Text = "No. of Deal Added : ";
-            // 
-            // label_deal_no
-            // 
-            this.label_deal_no.AutoSize = true;
-            this.label_deal_no.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_deal_no.Location = new System.Drawing.Point(146, 172);
-            this.label_deal_no.Name = "label_deal_no";
-            this.label_deal_no.Size = new System.Drawing.Size(15, 16);
-            this.label_deal_no.TabIndex = 9;
-            this.label_deal_no.Text = "0";
             // 
             // MainForm
             // 

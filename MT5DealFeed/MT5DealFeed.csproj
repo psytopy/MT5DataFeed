@@ -83,11 +83,11 @@
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.2.0.123\lib\net461\Dapper.dll</HintPath>
     </Reference>
-    <Reference Include="MetaQuotes.MT5CommonAPI">
-      <HintPath>..\Libs\MetaQuotes.MT5CommonAPI.dll</HintPath>
+    <Reference Include="MetaQuotes.MT5CommonAPI64">
+      <HintPath>..\Libs\MetaQuotes.MT5CommonAPI64.dll</HintPath>
     </Reference>
-    <Reference Include="MetaQuotes.MT5ManagerAPI">
-      <HintPath>..\..\TestMeta\TestLibrary\lib\MetaQuotes.MT5ManagerAPI.dll</HintPath>
+    <Reference Include="MetaQuotes.MT5ManagerAPI64">
+      <HintPath>..\Libs\MetaQuotes.MT5ManagerAPI64.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -148,6 +148,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(SolutionDir)Libs\MT5APIManager.dll $(ProjectDir)$(OutDir)</PostBuildEvent>
+    <PostBuildEvent>copy $(SolutionDir)Libs\MT5APIManager64.dll $(ProjectDir)$(OutDir)</PostBuildEvent>
   </PropertyGroup>
 </Project>

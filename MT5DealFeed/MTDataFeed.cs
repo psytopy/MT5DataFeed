@@ -109,6 +109,11 @@ namespace MT5DealFeed
                     return false;
                 }
                 cdealObj.Initialize(logger);
+                if ((res = m_manager.DealSubscribe(cdealObj)) != MTRetCode.MT_RET_OK)
+                {
+                    logger.Write(LogLevel.Debug, $"Real-time data subscribe failed ({res})");
+                    return false;
+                }
                 return true;
             }
             catch(Exception e)
@@ -126,11 +131,6 @@ namespace MT5DealFeed
                 if (res != MTRetCode.MT_RET_OK)
                 {
                     logger.Write(LogLevel.Debug, $"Connection failed ({res})");
-                    return false;
-                }
-                if ((res = m_manager.DealSubscribe(cdealObj)) != MTRetCode.MT_RET_OK)
-                {
-                    logger.Write(LogLevel.Debug, $"Real-time data subscribe failed ({res})");
                     return false;
                 }
                 logger.Write(LogLevel.Debug, "Connection Successful");
@@ -193,10 +193,10 @@ namespace MT5DealFeed
                 DealData dealData = new DealData();
                 dealData.Login = (long)deal.Login();
                 dealData.DealNo = (long)deal.Deal();
-                dealData.Time = DateTimeOffset.FromUnixTimeSeconds(deal.Time()).DateTime.ToString("yyyy'-'mm'-'dd hh:mm:ss.fff");
+                dealData.Time = DateTimeOffset.FromUnixTimeSeconds(deal.Time()).DateTime.ToString("yyyy'-'mm'-'dd HH:mm:ss.fff");
                 dealData.Symbol = deal.Symbol();
                 dealData.Type = ((DealType)deal.Action()).ToString();
-                dealData.Volume = deal.Volume() / 10000;
+                dealData.Volume = deal.Volume() / 10000.000;
                 dealData.Price = deal.Price();
                 dealData.ContractSize = deal.ContractSize();
                 dealData.Commission = deal.Commission();
