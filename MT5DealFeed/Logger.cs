@@ -9,7 +9,7 @@ namespace MT5DealFeed
         int level = 0;
 
         public delegate void ServerStatusEventHandler(MTServerStatus status);
-        public delegate void DealAddedEventHandler(long dealno);
+        public delegate void DealAddedEventHandler(long dealno, bool history);
         public event ServerStatusEventHandler ServerStatusChanged;
         public event DealAddedEventHandler DealAdded;
 
@@ -40,9 +40,9 @@ namespace MT5DealFeed
             ServerStatusChanged?.Invoke(status);
         }
 
-        public void NotifyDealAdded(long dealno)
+        public void NotifyDealAdded(long dealno, bool history)
         {
-            DealAdded?.Invoke(dealno);
+            DealAdded?.Invoke(dealno, history);
         }
     }
 

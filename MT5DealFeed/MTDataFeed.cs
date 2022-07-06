@@ -64,6 +64,18 @@ namespace MT5DealFeed
                 return;
             }
         }
+
+        public static void GetHistory(ulong login, DateTime from, DateTime to)
+        {
+            try
+            {
+                manager.FetchHistory(login, from, to);
+            }
+            catch
+            {
+                return;
+            }
+        }
     }
 
     class CManager : CIMTManagerSink
@@ -127,7 +139,7 @@ namespace MT5DealFeed
         {
             try
             {
-                MTRetCode res = m_manager.Connect(server, login, password, null, CIMTManagerAPI.EnPumpModes.PUMP_MODE_FULL, 30000);
+                MTRetCode res = m_manager.Connect(server, login, password, null, CIMTManagerAPI.EnPumpModes.PUMP_MODE_ORDERS | CIMTManagerAPI.EnPumpModes.PUMP_MODE_POSITIONS, 30000);
                 if (res != MTRetCode.MT_RET_OK)
                 {
                     logger.Write(LogLevel.Debug, $"Connection failed ({res})");
@@ -163,6 +175,53 @@ namespace MT5DealFeed
             }
             SMTManagerAPIFactory.Shutdown();
         }
+
+        #region by Avia
+        public void FetchHistory(ulong login, DateTime from, DateTime to)
+        {
+            try
+            {
+                CIMTDealArray deal_array = m_manager.DealCreateArray();
+
+                MTRetCode res = m_manager.DealRequestByGroup("*", SMTTime.FromDateTime(from), SMTTime.FromDateTime(to), deal_array);
+                if (res != MTRetCode.MT_RET_OK)
+                {
+                    logger.Write(LogLevel.Debug, $"Get deal history failed ({res})");
+                }
+                else
+                {
+                    var listofDeals = new List<DealData>();
+                    foreach (var deal in deal_array.ToArray())
+                    {
+                        DealData dealData = new DealData
+                        {
+                            DealNo = (long)deal.Deal(),
+                            Login = (long)deal.Login(),
+                            Symbol = deal.Symbol(),
+                            Type = ((DealType)deal.Action()).ToString(),
+                            Profit = deal.Profit(),
+                            Volume = deal.Volume() / 10000.000,
+                            Time = DateTimeOffset.FromUnixTimeSeconds(deal.Time()).DateTime.ToString("yyyy'-'mm'-'dd HH:mm:ss.fff"),
+                            Price = deal.Price(),
+                            Commission = deal.Commission(),
+                            ContractSize = deal.ContractSize(),
+                            Comment = deal.Comment()                            
+                        };
+                        listofDeals.Add(dealData);
+                        logger.Write(LogLevel.Debug, $"Deal added from history ID: {dealData.DealNo}");
+                        logger.NotifyDealAdded(dealData.DealNo, true);
+                    }
+                    DBIO.WriteData(listofDeals);
+                }
+                deal_array.Release();
+                deal_array.Dispose();
+            }
+            catch (Exception e)
+            {
+                logger.Write(LogLevel.Debug, $"Exception Occured at Get History. {e.Message}");
+            }
+        }
+        #endregion
 
         public override void OnConnect()
         {
@@ -204,7 +263,7 @@ namespace MT5DealFeed
                 dealData.Comment = deal.Comment();
                 DBIO.WriteData(new List<DealData>() { dealData });
                 logger.Write(LogLevel.Debug, $"Deal added ID: {dealData.DealNo}");
-                logger.NotifyDealAdded(dealData.DealNo);
+                logger.NotifyDealAdded(dealData.DealNo, false);
             }
         }
     }
