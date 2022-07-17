@@ -65,17 +65,19 @@ namespace MT5DealFeed
             }
         }
 
-        public static void GetHistory(ulong login, DateTime from, DateTime to)
+        #region by Avia
+        public static void GetHistory(DateTime from, DateTime to)
         {
             try
             {
-                manager.FetchHistory(login, from, to);
+                manager.FetchHistory(from, to);
             }
             catch
             {
                 return;
             }
         }
+        #endregion
     }
 
     class CManager : CIMTManagerSink
@@ -177,7 +179,7 @@ namespace MT5DealFeed
         }
 
         #region by Avia
-        public void FetchHistory(ulong login, DateTime from, DateTime to)
+        public void FetchHistory(DateTime from, DateTime to)
         {
             try
             {

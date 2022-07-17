@@ -9,6 +9,7 @@ namespace MT5DealFeed
     class DBIO
     {
         static string dbname = "";
+        static string instance = "";
         static Logger logger;
 
         public static bool CheckConfiguration(Logger log)
@@ -17,16 +18,41 @@ namespace MT5DealFeed
             logger.Write(LogLevel.Debug, "Attempting configuration check");
             try
             {
+                instance = Helper.GetAppSetting("instance");
+                if (String.IsNullOrWhiteSpace(instance)) instance = ".";
+                else instance = $".\\{instance}";
                 dbname = Helper.GetAppSetting("db");
                 if (String.IsNullOrEmpty(dbname)) return false;
-                var cstr = Helper.GetConnectionString(dbname);
-                if (!String.IsNullOrEmpty(cstr)) return true;
-                Helper.SetConnectionString(dbname, $"Data Source=.\\SQLEXPRESS;Database={dbname};Trusted_Connection=True;");
+                //var mstr = Helper.GetConnectionString("master");
+                //if (String.IsNullOrEmpty(mstr))
+                Helper.SetConnectionString("master", $"Data Source={instance};Database=master;Trusted_Connection=True;");
+                //var cstr = Helper.GetConnectionString(dbname);
+                //if (String.IsNullOrEmpty(cstr))
+                Helper.SetConnectionString(dbname, $"Data Source={instance};Database={dbname};Trusted_Connection=True;");
                 return true;
             }
             catch (Exception e)
             {
-                logger.Write(LogLevel.Debug, $"Initial configuration failed exception: {e.Message}");
+                logger.Write(LogLevel.Debug, $"Initial configuration failed. Exception: {e.Message}");
+                return false;
+            }
+        }
+
+        public static bool CheckServerConnectivity(string connectionString)
+        {
+            logger.Write(LogLevel.Debug, $"Attempting SQL server connectivity check.");
+            try
+            {
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                }
+                logger.Write(LogLevel.Debug, "SQL server connectivity check passed successfully");
+                return true;
+            }
+            catch (Exception e)
+            {
+                logger.Write(LogLevel.Debug, $"SQL server connectivity check failed. Exception: {e.Message}");
                 return false;
             }
         }

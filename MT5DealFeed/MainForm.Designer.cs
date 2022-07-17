@@ -56,13 +56,15 @@ namespace MT5DealFeed
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label_history_deal_no = new System.Windows.Forms.Label();
+            this.label_history_deal = new System.Windows.Forms.Label();
             this.label_to = new System.Windows.Forms.Label();
             this.label_from = new System.Windows.Forms.Label();
             this.datebox_to = new System.Windows.Forms.DateTimePicker();
             this.datebox_form = new System.Windows.Forms.DateTimePicker();
             this.button_gethistory = new System.Windows.Forms.Button();
-            this.label_history_deal = new System.Windows.Forms.Label();
-            this.label_history_deal_no = new System.Windows.Forms.Label();
+            this.textBox_instance_name = new System.Windows.Forms.TextBox();
+            this.label_instance_name = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -101,7 +103,7 @@ namespace MT5DealFeed
             this.groupBox1.Controls.Add(this.textBox_server);
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(473, 273);
+            this.groupBox1.Size = new System.Drawing.Size(473, 255);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Login";
@@ -174,7 +176,7 @@ namespace MT5DealFeed
             this.groupBox2.Controls.Add(this.label_conn_stat);
             this.groupBox2.Location = new System.Drawing.Point(485, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(297, 273);
+            this.groupBox2.Size = new System.Drawing.Size(297, 255);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Status";
@@ -262,19 +264,21 @@ namespace MT5DealFeed
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label_instance_name);
+            this.groupBox3.Controls.Add(this.textBox_instance_name);
             this.groupBox3.Controls.Add(this.button_db_confirm);
             this.groupBox3.Controls.Add(this.textBox_db_name);
             this.groupBox3.Controls.Add(this.label_db_name);
-            this.groupBox3.Location = new System.Drawing.Point(6, 285);
+            this.groupBox3.Location = new System.Drawing.Point(6, 267);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(776, 147);
+            this.groupBox3.Size = new System.Drawing.Size(776, 171);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Database";
             // 
             // button_db_confirm
             // 
-            this.button_db_confirm.Location = new System.Drawing.Point(680, 106);
+            this.button_db_confirm.Location = new System.Drawing.Point(680, 129);
             this.button_db_confirm.Name = "button_db_confirm";
             this.button_db_confirm.Size = new System.Drawing.Size(75, 23);
             this.button_db_confirm.TabIndex = 7;
@@ -284,7 +288,7 @@ namespace MT5DealFeed
             // 
             // textBox_db_name
             // 
-            this.textBox_db_name.Location = new System.Drawing.Point(169, 47);
+            this.textBox_db_name.Location = new System.Drawing.Point(169, 83);
             this.textBox_db_name.Name = "textBox_db_name";
             this.textBox_db_name.Size = new System.Drawing.Size(586, 20);
             this.textBox_db_name.TabIndex = 3;
@@ -293,7 +297,7 @@ namespace MT5DealFeed
             // 
             this.label_db_name.AutoSize = true;
             this.label_db_name.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_db_name.Location = new System.Drawing.Point(17, 45);
+            this.label_db_name.Location = new System.Drawing.Point(17, 83);
             this.label_db_name.Name = "label_db_name";
             this.label_db_name.Size = new System.Drawing.Size(125, 20);
             this.label_db_name.TabIndex = 2;
@@ -349,6 +353,26 @@ namespace MT5DealFeed
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "History";
             // 
+            // label_history_deal_no
+            // 
+            this.label_history_deal_no.AutoSize = true;
+            this.label_history_deal_no.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.label_history_deal_no.Location = new System.Drawing.Point(528, 186);
+            this.label_history_deal_no.Name = "label_history_deal_no";
+            this.label_history_deal_no.Size = new System.Drawing.Size(15, 16);
+            this.label_history_deal_no.TabIndex = 12;
+            this.label_history_deal_no.Text = "0";
+            // 
+            // label_history_deal
+            // 
+            this.label_history_deal.AutoSize = true;
+            this.label_history_deal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.label_history_deal.Location = new System.Drawing.Point(406, 186);
+            this.label_history_deal.Name = "label_history_deal";
+            this.label_history_deal.Size = new System.Drawing.Size(128, 16);
+            this.label_history_deal.TabIndex = 11;
+            this.label_history_deal.Text = "No. of Deal Added : ";
+            // 
             // label_to
             // 
             this.label_to.AutoSize = true;
@@ -371,25 +395,25 @@ namespace MT5DealFeed
             // 
             // datebox_to
             // 
-            this.datebox_to.CustomFormat = "dd - MM - yyyy";
+            this.datebox_to.CustomFormat = "dd - MM - yyyy  HH:mm:ss";
             this.datebox_to.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.datebox_to.Location = new System.Drawing.Point(155, 126);
             this.datebox_to.Name = "datebox_to";
-            this.datebox_to.Size = new System.Drawing.Size(132, 20);
+            this.datebox_to.Size = new System.Drawing.Size(155, 20);
             this.datebox_to.TabIndex = 8;
             // 
             // datebox_form
             // 
-            this.datebox_form.CustomFormat = "dd - MM - yyyy";
+            this.datebox_form.CustomFormat = "dd - MM - yyyy  HH:mm:ss";
             this.datebox_form.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.datebox_form.Location = new System.Drawing.Point(155, 64);
             this.datebox_form.Name = "datebox_form";
-            this.datebox_form.Size = new System.Drawing.Size(132, 20);
+            this.datebox_form.Size = new System.Drawing.Size(155, 20);
             this.datebox_form.TabIndex = 7;
             // 
             // button_gethistory
             // 
-            this.button_gethistory.Location = new System.Drawing.Point(212, 183);
+            this.button_gethistory.Location = new System.Drawing.Point(235, 183);
             this.button_gethistory.Name = "button_gethistory";
             this.button_gethistory.Size = new System.Drawing.Size(75, 23);
             this.button_gethistory.TabIndex = 6;
@@ -397,25 +421,23 @@ namespace MT5DealFeed
             this.button_gethistory.UseVisualStyleBackColor = true;
             this.button_gethistory.Click += new System.EventHandler(this.button_gethistory_Click);
             // 
-            // label_history_deal
+            // textBox_instance_name
             // 
-            this.label_history_deal.AutoSize = true;
-            this.label_history_deal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.label_history_deal.Location = new System.Drawing.Point(406, 186);
-            this.label_history_deal.Name = "label_history_deal";
-            this.label_history_deal.Size = new System.Drawing.Size(128, 16);
-            this.label_history_deal.TabIndex = 11;
-            this.label_history_deal.Text = "No. of Deal Added : ";
+            this.textBox_instance_name.Location = new System.Drawing.Point(169, 38);
+            this.textBox_instance_name.Name = "textBox_instance_name";
+            this.textBox_instance_name.Size = new System.Drawing.Size(586, 20);
+            this.textBox_instance_name.TabIndex = 8;
+            this.textBox_instance_name.Text = "SQLEXPRESS";
             // 
-            // label_history_deal_no
+            // label_instance_name
             // 
-            this.label_history_deal_no.AutoSize = true;
-            this.label_history_deal_no.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.label_history_deal_no.Location = new System.Drawing.Point(528, 186);
-            this.label_history_deal_no.Name = "label_history_deal_no";
-            this.label_history_deal_no.Size = new System.Drawing.Size(15, 16);
-            this.label_history_deal_no.TabIndex = 12;
-            this.label_history_deal_no.Text = "0";
+            this.label_instance_name.AutoSize = true;
+            this.label_instance_name.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_instance_name.Location = new System.Drawing.Point(17, 38);
+            this.label_instance_name.Name = "label_instance_name";
+            this.label_instance_name.Size = new System.Drawing.Size(117, 20);
+            this.label_instance_name.TabIndex = 9;
+            this.label_instance_name.Text = "Instance Name";
             // 
             // MainForm
             // 
@@ -477,6 +499,8 @@ namespace MT5DealFeed
         private System.Windows.Forms.DateTimePicker datebox_to;
         private System.Windows.Forms.DateTimePicker datebox_form;
         private System.Windows.Forms.Button button_gethistory;
+        private System.Windows.Forms.Label label_instance_name;
+        private System.Windows.Forms.TextBox textBox_instance_name;
     }
 }
 

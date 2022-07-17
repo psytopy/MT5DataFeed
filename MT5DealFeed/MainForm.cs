@@ -20,7 +20,7 @@ namespace MT5DealFeed
             logger = new Logger("applog.log");
             logger.ServerStatusChanged += ServerStatusChanged;
             logger.DealAdded += DealAdded;
-            logger.SetLevel(LogLevel.Debug);
+            logger.SetLevel(LogLevel.Info);
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
@@ -95,6 +95,7 @@ namespace MT5DealFeed
         {
             if (button_db_confirm.Text == "Edit")
             {
+                textBox_instance_name.Enabled = true;
                 textBox_db_name.Enabled = true;
                 button_db_confirm.Text = "Confirm";
 
@@ -105,9 +106,28 @@ namespace MT5DealFeed
             }
             else if (button_db_confirm.Text == "Confirm")
             {
+                Helper.SetAppSetting("instance", textBox_instance_name.Text);
                 Helper.SetAppSetting("db", textBox_db_name.Text);
+                if (!DBIO.CheckConfiguration(logger))
+                {
+                    logger.Write(LogLevel.Info, "Database configuration failed to update.");
+                    DisabledMode();
+                    return;
+                }
                 logger.Write(LogLevel.Info, "Database configuration updated");
-                DBIO.CheckConfiguration(logger);
+                logger.Write(LogLevel.Info, $"Database Server Instance {Helper.GetAppSetting("instance")}");
+                logger.Write(LogLevel.Info, "Checking SQL server connectivity");
+                if (!DBIO.CheckServerConnectivity(Helper.GetConnectionString("master")))
+                {
+                    logger.Write(LogLevel.Error, "Could not connect to SQL server");
+                    RollBackConfig();
+                    DisabledMode();
+                    //textBox_instance_name.Text = "";
+                    //textBox_db_name.Text = "";
+                    MessageBox.Show("Could not connect to SQL server.");
+                    return;
+                }
+                logger.Write(LogLevel.Info, "SQL server connectivity is ok");
                 logger.Write(LogLevel.Info, "Checking database validity");
                 var res = DBIO.CheckDatabaseValidity();
                 if (res != 0)
@@ -120,7 +140,8 @@ namespace MT5DealFeed
                             logger.Write(LogLevel.Error, "Could not create database");
                             RollBackConfig();
                             DisabledMode();
-                            textBox_db_name.Text = "";
+                            //textBox_instance_name.Text = "";
+                            //textBox_db_name.Text = "";
                             MessageBox.Show("Could not setup the database.");
                             return;
                         }
@@ -136,7 +157,8 @@ namespace MT5DealFeed
                             logger.Write(LogLevel.Error, "Cannot create database tables");
                             RollBackConfig();
                             DisabledMode();
-                            textBox_db_name.Text = "";
+                            //textBox_instance_name.Text = "";
+                            //textBox_db_name.Text = "";
                             MessageBox.Show("Could not setup the database.");
                             return;
                         }
@@ -146,7 +168,8 @@ namespace MT5DealFeed
                         logger.Write(LogLevel.Error, "Unknown error occured during database configuration");
                         RollBackConfig();
                         DisabledMode();
-                        textBox_db_name.Text = "";
+                        //textBox_instance_name.Text = "";
+                        //textBox_db_name.Text = "";
                         MessageBox.Show("Could not setup the database.");
                         return;
                     }
@@ -154,6 +177,7 @@ namespace MT5DealFeed
                 }
 
                 logger.Write(LogLevel.Info, "Database is valid");
+                textBox_instance_name.Enabled = false;
                 textBox_db_name.Enabled = false;
                 button_db_confirm.Text = "Edit";
 
@@ -171,18 +195,12 @@ namespace MT5DealFeed
             label_history_deal_no.Text = historydealaddednum.ToString();
             DateTime from = datebox_form.Value;
             DateTime to = datebox_to.Value;
-            ulong id = 0;
-            if (!UInt64.TryParse(textBox_login.Text, out id))
-            {
-                MessageBox.Show("Invalid Login!");
-                return;
-            }
             if (from >= to)
             {
                 MessageBox.Show("From date must be less than To date!");
                 return;
             }
-            Task.Run(() => { MTDataFeed.GetHistory(id, from, to); }).ContinueWith((x)=> { button_gethistory.Invoke((MethodInvoker)delegate { MessageBox.Show("Fetching Complete!"); }); });
+            Task.Run(() => { MTDataFeed.GetHistory(from, to); }).ContinueWith((x)=> { button_gethistory.Invoke((MethodInvoker)delegate { MessageBox.Show("Fetching Complete!"); }); });
         }
         #endregion
 
@@ -209,6 +227,7 @@ namespace MT5DealFeed
             label_stat_conn_stat.Text = "Disconnected";
             label_stat_conn_stat.ForeColor = Color.Red;
 
+            textBox_instance_name.Enabled = true;
             textBox_db_name.Enabled = true;
             button_db_confirm.Text = "Confirm";
         }
@@ -217,7 +236,9 @@ namespace MT5DealFeed
         {
             logger.Write(LogLevel.Info, "Rolling back configurations");
             var dbname = Helper.GetAppSetting("db");
+            Helper.SetAppSetting("instance", "");
             Helper.SetAppSetting("db", "");
+            Helper.RemoveConnectionString("master");
             Helper.RemoveConnectionString(dbname);
             logger.Write(LogLevel.Info, "Rollback Complete");
         }
@@ -227,7 +248,6 @@ namespace MT5DealFeed
             MTDataFeed.InitLogger(logger);
             DisabledMode();
             logger.Write(LogLevel.Info, "App Startup");
-            logger.Write(LogLevel.Info, "Database Server Instance \"SQLEXPRESS\"");
             if (!DBIO.CheckConfiguration(logger))
             {
                 logger.Write(LogLevel.Info, "Database configuration not found");
@@ -236,6 +256,19 @@ namespace MT5DealFeed
             else
             {
                 logger.Write(LogLevel.Info, "Database configuration found");
+                logger.Write(LogLevel.Info, $"Database Server Instance {Helper.GetAppSetting("instance")}");
+                logger.Write(LogLevel.Info, "Checking SQL server connectivity");
+                if (!DBIO.CheckServerConnectivity(Helper.GetConnectionString("master")))
+                {
+                    logger.Write(LogLevel.Error, "Could not connect to SQL server");
+                    RollBackConfig();
+                    DisabledMode();
+                    //textBox_instance_name.Text = "";
+                    //textBox_db_name.Text = "";
+                    MessageBox.Show("Could not connect to SQL server.");
+                    return;
+                }
+                logger.Write(LogLevel.Info, "SQL server connectivity is ok");
                 logger.Write(LogLevel.Info, "Database Validity Check");
                 var res = DBIO.CheckDatabaseValidity();
                 if (res != 0)
@@ -248,7 +281,8 @@ namespace MT5DealFeed
                             logger.Write(LogLevel.Error, "Could not create database");
                             RollBackConfig();
                             DisabledMode();
-                            textBox_db_name.Text = "";
+                            //textBox_instance_name.Text = "";
+                            //textBox_db_name.Text = "";
                             Enabled = true;
                             return;
                         }
@@ -267,7 +301,8 @@ namespace MT5DealFeed
                             logger.Write(LogLevel.Error, "Error configuring db");
                             RollBackConfig();
                             DisabledMode();
-                            textBox_db_name.Text = "";
+                            //textBox_instance_name.Text = "";
+                            //textBox_db_name.Text = "";
                             Enabled = true;
                             return;
                         }
@@ -277,7 +312,8 @@ namespace MT5DealFeed
                         logger.Write(LogLevel.Debug, "Unknown error occured during database configuration");
                         RollBackConfig();
                         DisabledMode();
-                        textBox_db_name.Text = "";
+                        //textBox_instance_name.Text = "";
+                        //textBox_db_name.Text = "";
                         Enabled = true;
                         return;
                     }
@@ -287,7 +323,9 @@ namespace MT5DealFeed
                     label_stat_db_stat.Text = "Configured";
                     label_stat_db_stat.ForeColor = Color.Green;
 
+                    textBox_instance_name.Enabled = false;
                     textBox_db_name.Enabled = false;
+                    textBox_instance_name.Text = Helper.GetAppSetting("instance");
                     textBox_db_name.Text = Helper.GetAppSetting("db");
                     button_db_confirm.Text = "Edit";
                 }
@@ -297,7 +335,9 @@ namespace MT5DealFeed
                     label_stat_db_stat.Text = "Configured";
                     label_stat_db_stat.ForeColor = Color.Green;
 
+                    textBox_instance_name.Enabled = false;
                     textBox_db_name.Enabled = false;
+                    textBox_instance_name.Text = Helper.GetAppSetting("instance");
                     textBox_db_name.Text = Helper.GetAppSetting("db");
                     button_db_confirm.Text = "Edit";
                 }
