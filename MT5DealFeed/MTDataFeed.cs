@@ -203,7 +203,7 @@ namespace MT5DealFeed
                             Type = ((DealType)deal.Action()).ToString(),
                             Profit = deal.Profit(),
                             Volume = deal.Volume() / 10000.000,
-                            Time = DateTimeOffset.FromUnixTimeSeconds(deal.Time()).DateTime.ToString("yyyy'-'mm'-'dd HH:mm:ss.fff"),
+                            Time = DateTimeOffset.FromUnixTimeSeconds(deal.Time()).DateTime.ToString("yyyy'-'MM'-'dd HH:mm:ss.fff"),
                             Price = deal.Price(),
                             Commission = deal.Commission(),
                             ContractSize = deal.ContractSize(),
@@ -254,7 +254,7 @@ namespace MT5DealFeed
                 DealData dealData = new DealData();
                 dealData.Login = (long)deal.Login();
                 dealData.DealNo = (long)deal.Deal();
-                dealData.Time = DateTimeOffset.FromUnixTimeSeconds(deal.Time()).DateTime.ToString("yyyy'-'mm'-'dd HH:mm:ss.fff");
+                dealData.Time = DateTimeOffset.FromUnixTimeSeconds(deal.Time()).DateTime.ToString("yyyy'-'MM'-'dd HH:mm:ss.fff");
                 dealData.Symbol = deal.Symbol();
                 dealData.Type = ((DealType)deal.Action()).ToString();
                 dealData.Volume = deal.Volume() / 10000.000;
